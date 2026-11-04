@@ -58,3 +58,72 @@ export interface UserSettings {
 }
 
 export type SettingsSection = 'general' | 'notifications' | 'trading' | 'privacy' | 'data';
+
+
+// ═══════════════════════════════════════════════════════════
+// GLOBAL PLATFORM SETTINGS (Affects ALL users)
+// ═══════════════════════════════════════════════════════════
+
+export interface GlobalLimits {
+  maxAccountBalanceUSD: number;
+  maxWithdrawalAmountUSD: number;
+  minWithdrawalAmountUSD: number;
+  maxDailyWithdrawalAmountUSD: number;
+  maxTradeSizeUSD: number;
+}
+
+export interface GlobalTrading {
+  tradingEnabled: boolean;
+  globalMaxLeverage: number;
+  defaultLeverage: number;
+  tradingFeePercentage: number;
+  maintenanceFeePercentage: number;
+}
+
+export interface GlobalKYCAndSecurity {
+  requireKYCForWithdrawal: boolean;
+  requireKYCForTrading: boolean;
+  enforce2FAForWithdrawals: boolean;
+  sessionTimeoutMinutesGlobal: number;
+  maxFailedLoginAttempts: number;
+  minAgeForAccount: number;
+}
+
+export interface GlobalFees {
+  depositFeePercentage: number;
+  withdrawalFeeFlatUSD: number;
+  withdrawalFeePercentage: number;
+}
+
+export interface GlobalPlatformSettings {
+  limits: GlobalLimits;
+  trading: GlobalTrading;
+  kycAndSecurity: GlobalKYCAndSecurity;
+  fees: GlobalFees;
+  maintenanceMode: boolean;
+  updatedAt: Timestamp;
+}
+
+// ═══════════════════════════════════════════════════════════
+// ADMIN PERSONAL SETTINGS (Affects ONLY this admin)
+// ═══════════════════════════════════════════════════════════
+
+export interface AdminAlertPreferences {
+  kycSubmissions: boolean;
+  largeWithdrawals: boolean;
+  systemErrors: boolean;
+  userReports: boolean;
+  securityBreaches: boolean;
+}
+
+export interface AdminPersonalSettings extends Omit<UserSettings, 'emailNotifications' | 'pushNotifications' | 'smsNotifications' | 'trading' | 'privacy'> {
+  // Inherits: sessionTimeout, displayName, language, timezone, preferredCurrency, dateFormat, numberFormat
+  
+  // Admin-specific overrides/additions
+  dashboardLayout: 'compact' | 'detailed';
+  autoRefreshDashboard: boolean;
+  adminAlerts: AdminAlertPreferences;
+  
+  updatedAt: Timestamp;
+  createdAt: Timestamp;
+}

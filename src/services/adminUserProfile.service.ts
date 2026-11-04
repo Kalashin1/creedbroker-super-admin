@@ -14,7 +14,7 @@ import { db } from "../lib/firebase";
 import type { UserProfile } from "../types/user.types";
 import type { BankAccount } from "../types/user.types";
 import type { UserInvestment } from "../types/investment.types";
-import type { TransactionRecord } from "./transaction.service";
+import type { TransactionRecord } from "../types/transaction.types";
 import type { LoginActivity, ActiveSession } from "../types/security.types";
 
 export interface UserProfileDetail {
@@ -133,7 +133,7 @@ const fetchTransactions = async (
           usdValue: data.usdValue,
           description: data.description,
           status: data.status,
-          date: data.createdAt?.toDate() || new Date(),
+          createdAt: data.createdAt?.toDate() || new Date(),
           fee: data.fee,
           txHash: data.txHash,
         };

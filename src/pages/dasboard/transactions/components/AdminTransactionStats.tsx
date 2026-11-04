@@ -5,7 +5,6 @@ import {
   CheckCircle2,
   Clock,
   XCircle,
-  DollarSign,
 } from "lucide-react";
 import type { TransactionRecord } from "../../../../types/transaction.types";
 

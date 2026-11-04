@@ -17,60 +17,60 @@ interface AppBarProps {
 // ─────────────────────────────────────────────────────────────
 // Mock data (replace with Firestore subscription later)
 // ─────────────────────────────────────────────────────────────
-const MOCK_NOTIFICATIONS = [
-  {
-    id: "1",
-    type: "success" as const,
-    category: "transaction",
-    title: "Deposit received",
-    message: "Your deposit of $5,000.00 USDT has been credited to your wallet.",
-    read: false,
-    time: "2m ago",
-    actionUrl: "/dashboard/transactions",
-  },
-  {
-    id: "2",
-    type: "success" as const,
-    category: "investment",
-    title: "Investment matured",
-    message:
-      "Your Gold Package investment has matured. $1,240 profit available.",
-    read: false,
-    time: "1h ago",
-    actionUrl: "/dashboard/investments",
-  },
-  {
-    id: "3",
-    type: "success" as const,
-    category: "kyc",
-    title: "KYC verification approved",
-    message:
-      "Your identity has been verified. You now have full withdrawal access.",
-    read: false,
-    time: "1d ago",
-    actionUrl: "/dashboard/profile",
-  },
-  {
-    id: "4",
-    type: "info" as const,
-    category: "system",
-    title: "New investment package available",
-    message: "Check out our Platinum Package — up to 18% monthly returns.",
-    read: true,
-    time: "2d ago",
-    actionUrl: "/dashboard/invest",
-  },
-  {
-    id: "5",
-    type: "warning" as const,
-    category: "security",
-    title: "New sign-in detected",
-    message: "A new sign-in from Chrome on macOS in Lagos, Nigeria.",
-    read: true,
-    time: "3d ago",
-    actionUrl: "/dashboard/security",
-  },
-];
+// const MOCK_NOTIFICATIONS = [
+//   {
+//     id: "1",
+//     type: "success" as const,
+//     category: "transaction",
+//     title: "Deposit received",
+//     message: "Your deposit of $5,000.00 USDT has been credited to your wallet.",
+//     read: false,
+//     time: "2m ago",
+//     actionUrl: "/dashboard/transactions",
+//   },
+//   {
+//     id: "2",
+//     type: "success" as const,
+//     category: "investment",
+//     title: "Investment matured",
+//     message:
+//       "Your Gold Package investment has matured. $1,240 profit available.",
+//     read: false,
+//     time: "1h ago",
+//     actionUrl: "/dashboard/investments",
+//   },
+//   {
+//     id: "3",
+//     type: "success" as const,
+//     category: "kyc",
+//     title: "KYC verification approved",
+//     message:
+//       "Your identity has been verified. You now have full withdrawal access.",
+//     read: false,
+//     time: "1d ago",
+//     actionUrl: "/dashboard/profile",
+//   },
+//   {
+//     id: "4",
+//     type: "info" as const,
+//     category: "system",
+//     title: "New investment package available",
+//     message: "Check out our Platinum Package — up to 18% monthly returns.",
+//     read: true,
+//     time: "2d ago",
+//     actionUrl: "/dashboard/invest",
+//   },
+//   {
+//     id: "5",
+//     type: "warning" as const,
+//     category: "security",
+//     title: "New sign-in detected",
+//     message: "A new sign-in from Chrome on macOS in Lagos, Nigeria.",
+//     read: true,
+//     time: "3d ago",
+//     actionUrl: "/dashboard/security",
+//   },
+// ];
 
 // ─────────────────────────────────────────────────────────────
 // Helpers
@@ -118,7 +118,7 @@ const AppBar: React.FC<AppBarProps> = ({ onToggleSidebar, displayName }) => {
 
           {/* Mobile logo */}
           <div className="flex items-center gap-2 lg:hidden">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-emerald-400 to-cyan-500">
               <TrendingUp
                 className="h-4 w-4 text-slate-950"
                 strokeWidth={2.5}
@@ -164,7 +164,7 @@ const AppBar: React.FC<AppBarProps> = ({ onToggleSidebar, displayName }) => {
             >
               <Bell className="h-5 w-5" />
               {unreadCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-slate-950">
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-slate-950">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </span>
               )}
@@ -194,7 +194,7 @@ const AppBar: React.FC<AppBarProps> = ({ onToggleSidebar, displayName }) => {
               aria-label="Open profile menu"
               aria-expanded={profileOpen}
             >
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-[11px] font-bold text-slate-950">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-cyan-500 text-[11px] font-bold text-slate-950">
                 {getInitials(displayName)}
               </div>
               <div className="hidden text-left sm:block">

@@ -1,6 +1,6 @@
 // src/pages/admin/Investments.tsx
 import React, { useState, useEffect, useMemo } from "react";
-import { Package, LayoutGrid, Table, Loader2 } from "lucide-react";
+import { Package, LayoutGrid, Table } from "lucide-react";
 import { toast } from "react-toastify";
 import {
   fetchAllInvestments,

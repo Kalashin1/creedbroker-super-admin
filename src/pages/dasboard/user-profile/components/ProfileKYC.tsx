@@ -32,11 +32,11 @@ const ProfileKYC: React.FC<Props> = ({ profile }) => {
   const v = profile.verification || {
     location: { status: "not_started" },
     identity: { status: "not_started" },
-    tax: { status: "not_started" },
+    tax: { status: "not_started", country: "", tin: "" },
   };
 
   const docs = v.identity?.documents || {};
-  const tax = v.tax || {};
+  const tax = v.tax || { status: "not_started", country: "", tin: "" };
 
   const getStatusBadge = (status: string) => {
     const config: Record<
@@ -121,7 +121,7 @@ const ProfileKYC: React.FC<Props> = ({ profile }) => {
                     (e.target as HTMLImageElement).style.display = "none";
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 to-transparent" />
                 <span className="absolute bottom-2 left-2 text-[10px] font-semibold text-white/80 uppercase">
                   {fileType}
                 </span>
@@ -228,7 +228,7 @@ const ProfileKYC: React.FC<Props> = ({ profile }) => {
                   Tax ID (TIN)
                 </p>
                 <p className="mt-1 text-sm font-mono font-semibold text-white">
-                  {tax.tin || "—"}
+                  {tax?.tin || "—"}
                 </p>
               </div>
               <div>
@@ -255,7 +255,7 @@ const ProfileKYC: React.FC<Props> = ({ profile }) => {
 
       {/* 🆕 Document Preview Modal — Robust handling */}
       {previewUrl && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
           <div
             className="absolute inset-0 bg-black/90 backdrop-blur-sm"
             onClick={() => setPreviewUrl(null)}
@@ -297,7 +297,7 @@ const ProfileKYC: React.FC<Props> = ({ profile }) => {
             {/* Modal Content */}
             <div className="p-4 overflow-auto max-h-[calc(90vh-80px)]">
               {detectFileType(previewUrl) === "image" ? (
-                <div className="relative flex items-center justify-center min-h-[300px]">
+                <div className="relative flex items-center justify-center min-h-75">
                   {imageLoading && !imageError && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <Loader2 className="h-8 w-8 animate-spin text-cyan-400" />

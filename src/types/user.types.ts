@@ -22,6 +22,7 @@ export interface VerificationData {
     status: VerificationStatus;
     documents?: { govIdUrl?: string; proofOfAddressUrl?: string };
   };
+  
   tax: { status: VerificationStatus; tin?: string; country?: string };
 }
 

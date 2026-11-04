@@ -12,6 +12,11 @@ import Deposits from "../pages/dasboard/deposit";
 import AdminTransactions from "../pages/dasboard/transactions";
 import AdminAIStrategies from "../pages/dasboard/ai";
 import AdminWallets from "../pages/dasboard/wallets";
+import AdminSecurity from "../pages/dasboard/security";
+import AdminProfile from "../pages/dasboard/profile";
+import AdminSettings from "../pages/dasboard/settings";
+import AdminPaymentMethods from "../pages/dasboard/payment";
+import AdminSupport from "../pages/dasboard/support";
 
 const router = createBrowserRouter([
   {
@@ -97,6 +102,46 @@ const router = createBrowserRouter([
       </RequireAuth>
     ),
     path: SCREENS.WALLETS,
+  },
+  {
+    element: (
+      <RequireAuth>
+        <AdminSecurity />
+      </RequireAuth>
+    ),
+    path: SCREENS.SECURITY,
+  },
+  {
+    element: (
+      <RequireAuth>
+        <AdminProfile />
+      </RequireAuth>
+    ),
+    path: SCREENS.PROFILE,
+  },
+  {
+    element: (
+      <RequireAuth>
+        <AdminSettings />
+      </RequireAuth>
+    ),
+    path: SCREENS.SETTINGS,
+  },
+  {
+    element: (
+      <RequireAuth>
+        <AdminPaymentMethods />
+      </RequireAuth>
+    ),
+    path: SCREENS.CARDS,
+  },
+  {
+    element: (
+      <RequireAuth>
+        <AdminSupport />
+      </RequireAuth>
+    ),
+    path: SCREENS.SUPPORT,
   },
 ]);
 

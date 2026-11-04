@@ -1,6 +1,6 @@
 // src/pages/admin/Withdrawals.tsx
 import React, { useState, useEffect } from "react";
-import { ArrowUpFromLine, Loader2, RefreshCw } from "lucide-react";
+import { ArrowUpFromLine, RefreshCw } from "lucide-react";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../context/AuthContext";
 import {
@@ -124,7 +124,7 @@ const Withdrawals: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/20">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-linear-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/20">
               <ArrowUpFromLine className="h-5 w-5 text-amber-400" />
             </div>
             <div>

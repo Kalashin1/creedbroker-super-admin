@@ -13,12 +13,13 @@ import {
   limit,
   serverTimestamp,
   where,
+  // where,
 } from "firebase/firestore";
 import {
   updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
-  sendEmailVerification,
+  // sendEmailVerification,
 } from "firebase/auth";
 import { db, auth } from "../lib/firebase";
 import type {
@@ -121,7 +122,7 @@ export const sendEmailOTP = async (
   email: string,
 ): Promise<void> => {
   const code = generateOTP();
-  const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+  // const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
   // Store OTP in Firestore
   await setDoc(getEmailOTPDoc(userId), {
@@ -375,4 +376,88 @@ export const checkSessionTimeout = async (
   const diffMinutes = (now.getTime() - lastActive.getTime()) / (1000 * 60);
 
   return diffMinutes > settings.sessionTimeout;
+};
+
+export interface GlobalSecuritySettings {
+  require2FAForWithdrawals: boolean;
+  sessionTimeoutMinutes: number;
+  maxFailedLoginAttempts: number;
+  minWithdrawalAmountUSD: number;
+  maintenanceMode: boolean;
+  updatedAt: any;
+}
+
+export const getGlobalSecuritySettings =
+  async (): Promise<GlobalSecuritySettings> => {
+    const docRef = doc(db, "appSettings", "security");
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      return snap.data() as GlobalSecuritySettings;
+    }
+    // Default fallback settings
+    return {
+      require2FAForWithdrawals: true,
+      sessionTimeoutMinutes: 30,
+      maxFailedLoginAttempts: 5,
+      minWithdrawalAmountUSD: 50,
+      maintenanceMode: false,
+      updatedAt: new Date(),
+    };
+  };
+
+export const updateGlobalSecuritySettings = async (
+  settings: Partial<GlobalSecuritySettings>,
+) => {
+  const docRef = doc(db, "appSettings", "security");
+  await updateDoc(docRef, {
+    ...settings,
+    updatedAt: serverTimestamp(),
+  });
+};
+
+export const getSecurityAlerts = async (limitCount: number = 50) => {
+  const q = query(
+    collection(db, "securityAlerts"),
+    orderBy("createdAt", "desc"),
+    limit(limitCount),
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+};
+
+export const markAlertAsReviewed = async (alertId: string) => {
+  await updateDoc(doc(db, "securityAlerts", alertId), { reviewed: true });
+};
+
+export const getPendingKYCUsers = async (limitCount: number = 50) => {
+  const q = query(
+    collection(db, "users"),
+    where("kycStatus", "==", "pending"),
+    orderBy("updatedAt", "desc"),
+    limit(limitCount),
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+};
+
+export type KycFilterStatus = "pending" | "verified" | "rejected";
+
+export const getKYCUsers = async (
+  status: KycFilterStatus,
+  limitCount: number = 50,
+) => {
+  const q = query(
+    collection(db, "users"),
+    where("kycStatus", "==", status),
+    orderBy("updatedAt", "desc"),
+    limit(limitCount),
+  );
+
+  try {
+    const snap = await getDocs(q);
+    return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  } catch (error) {
+    console.error(`Error fetching ${status} KYC users:`, error);
+    return [];
+  }
 };

@@ -1,5 +1,5 @@
 // src/types/admin.types.ts
-import { Timestamp } from 'firebase/firestore';
+// import { Timestamp } from 'firebase/firestore';
 
 export type AccountStatus = 'active' | 'restricted' | 'blocked' | 'deleted';
 export type UserRole = 'admin' | 'client';

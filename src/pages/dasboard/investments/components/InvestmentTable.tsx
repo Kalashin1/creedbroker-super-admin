@@ -7,7 +7,6 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
-  User as UserIcon,
 } from "lucide-react";
 import type {
   AdminInvestment,
@@ -229,7 +228,7 @@ const InvestmentTable: React.FC<Props> = ({
                       {/* Investment info */}
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20">
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20">
                             <Package className="h-4 w-4 text-emerald-400" />
                           </div>
                           <div className="min-w-0">
@@ -246,7 +245,7 @@ const InvestmentTable: React.FC<Props> = ({
                       {/* User */}
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-[10px] font-bold text-slate-950">
+                          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-cyan-500 text-[10px] font-bold text-slate-950">
                             {inv.userName.charAt(0).toUpperCase()}
                           </div>
                           <div className="min-w-0">

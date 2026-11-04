@@ -8,7 +8,7 @@ import {
   sendEmailOTP,
   verifyEmailOTP,
 } from "../../../services/security.service";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Mail,
@@ -55,7 +55,7 @@ type FormErrors = Partial<Record<keyof FormData, string>>;
 // ─────────────────────────────────────────────────────────────
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const { sendNotification } = useNotifications();
   const redirectTo = "/dashboard";
   // || (location.state as any)?.from?.pathname
@@ -252,7 +252,7 @@ const Login: React.FC = () => {
 
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30">
                   <ShieldCheck className="h-6 w-6 text-cyan-400" />
                 </div>
                 <div>
@@ -445,7 +445,7 @@ const Login: React.FC = () => {
                     onChange={handleChange}
                     className="peer sr-only"
                   />
-                  <div className="h-[18px] w-[18px] rounded-md border border-slate-700 bg-slate-900 transition peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center">
+                  <div className="h-4.5 w-4.5 rounded-md border border-slate-700 bg-slate-900 transition peer-checked:border-emerald-500 peer-checked:bg-emerald-500 flex items-center justify-center">
                     {formData.rememberMe && (
                       <Check
                         className="h-3 w-3 text-slate-950"

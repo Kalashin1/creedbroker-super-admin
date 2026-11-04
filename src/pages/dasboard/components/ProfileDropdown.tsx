@@ -69,55 +69,53 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ open, onClose }) => {
       icon: User,
       to: SCREENS.PROFILE,
       description: "Manage your personal info",
-    },
-    {
-      label: "Start Trading",
-      icon: TrendingUp,
-      to: SCREENS.TRADING,
-      description: "Make a trade",
-      highlight: true,
+      highlight: false,
     },
     {
       label: "Payment methods",
       icon: CreditCard,
       to: SCREENS.CARDS,
       description: "Cards & bank accounts",
+      highlight: false,
     },
     {
       label: "Security",
       icon: Shield,
       to: SCREENS.SECURITY,
       description: "Password & 2FA",
+      highlight: false,
     },
     {
       label: "Settings",
       icon: Settings,
       to: SCREENS.SETTINGS,
       description: "Preferences",
+      highlight: false,
     },
     {
       label: "Help & support",
       icon: HelpCircle,
       to: SCREENS.SUPPORT,
       description: "Get in touch",
+      highlight: false,
     },
   ];
 
   return (
     <div
       ref={ref}
-      className="absolute right-0 top-full mt-2 w-[300px] max-w-[calc(100vw-2rem)] origin-top-right animate-[scaleIn_0.15s_ease-out]"
+      className="absolute right-0 top-full mt-2 w-75 max-w-[calc(100vw-2rem)] origin-top-right animate-[scaleIn_0.15s_ease-out]"
     >
       <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/95 shadow-2xl shadow-black/40 backdrop-blur-xl">
         {/* User header */}
         <Link
-          to="/dashboard/profile"
+          to={SCREENS.PROFILE}
           onClick={onClose}
           className="flex items-center gap-3 border-b border-slate-800 px-4 py-4 transition hover:bg-slate-800/50"
         >
           {/* Avatar */}
           <div className="relative">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-sm font-bold text-slate-950 shadow-lg shadow-emerald-500/20">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-cyan-500 text-sm font-bold text-slate-950 shadow-lg shadow-emerald-500/20">
               {getInitials(displayName)}
             </div>
             <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-slate-900 bg-emerald-400" />
@@ -159,7 +157,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ open, onClose }) => {
               onClick={onClose}
               className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 transition ${
                 item.highlight
-                  ? "bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 hover:from-emerald-500/20 hover:to-cyan-500/20"
+                  ? "bg-linear-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 hover:from-emerald-500/20 hover:to-cyan-500/20"
                   : "hover:bg-slate-800/60"
               }`}
             >

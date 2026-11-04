@@ -1,6 +1,6 @@
 // src/pages/admin/Transactions.tsx
 import React, { useState, useEffect } from "react";
-import { ArrowRightLeft, Loader2, RefreshCw } from "lucide-react";
+import { ArrowRightLeft, RefreshCw } from "lucide-react";
 import { toast } from "react-toastify";
 import { fetchAllTransactions } from "../../../services/transaction.service";
 import { AdminTransactionStats } from "./components/AdminTransactionStats";
@@ -45,7 +45,7 @@ const AdminTransactions: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500/20 to-purple-500/20 border border-violet-500/20">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-linear-to-br from-violet-500/20 to-purple-500/20 border border-violet-500/20">
               <ArrowRightLeft className="h-5 w-5 text-violet-400" />
             </div>
             <div>

@@ -8,7 +8,7 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  where,
+  // where,
   orderBy,
   limit,
   onSnapshot,
@@ -43,7 +43,7 @@ const getUserAIStatsDoc = (userId: string) =>
  * Returns an unsubscribe function to clean up the listener.
  */
 export const subscribeToLiveSignals = (
-  userId: string,
+  _userId: string,
   callback: (signals: TradingSignal[]) => void,
   onError?: (error: Error) => void,
 ): Unsubscribe => {

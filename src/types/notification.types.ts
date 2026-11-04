@@ -1,5 +1,4 @@
 // src/types/notification.types.ts
-import { Timestamp } from "firebase/firestore";
 
 export type NotificationCategory =
   | "security"

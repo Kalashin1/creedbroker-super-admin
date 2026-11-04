@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "creedcapital-admin": "creedcapital-fbe89"
+  },
+  "targets": {
+    "creedcapital-fbe89": {
+      "hosting": {
+        "creedcapital-admin": [
+          "creedcapital-admin"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

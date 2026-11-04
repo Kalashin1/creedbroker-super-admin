@@ -1,7 +1,6 @@
 // src/components/admin/InvestmentCardView.tsx
 import React from "react";
 import {
-  User,
   Calendar,
   TrendingUp,
   DollarSign,
@@ -65,7 +64,7 @@ const InvestmentCardView: React.FC<Props> = ({ investments, onAction }) => {
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20">
                   <Package className="h-5 w-5 text-emerald-400" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -90,7 +89,7 @@ const InvestmentCardView: React.FC<Props> = ({ investments, onAction }) => {
 
             {/* User info */}
             <div className="mb-4 flex items-center gap-2 rounded-lg bg-slate-950/50 border border-slate-800 p-2.5">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-xs font-bold text-slate-950">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-cyan-500 text-xs font-bold text-slate-950">
                 {investment.userName.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">

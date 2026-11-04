@@ -278,15 +278,15 @@ export const AdminAccountActionsModal: React.FC<Props> = ({
   ];
 
   // Network info for recovery tab
-  const networks = [
-    { id: "btc" as const, label: "Bitcoin", fullName: "BTC Wallet" },
-    { id: "eth" as const, label: "Ethereum", fullName: "ETH Wallet" },
-    { id: "bnb" as const, label: "BNB Chain", fullName: "BNB Wallet" },
-    { id: "sol" as const, label: "Solana", fullName: "SOL Wallet" },
-  ];
+  // const networks = [
+  //   { id: "btc" as const, label: "Bitcoin", fullName: "BTC Wallet" },
+  //   { id: "eth" as const, label: "Ethereum", fullName: "ETH Wallet" },
+  //   { id: "bnb" as const, label: "BNB Chain", fullName: "BNB Wallet" },
+  //   { id: "sol" as const, label: "Solana", fullName: "SOL Wallet" },
+  // ];
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={onClose}
@@ -295,7 +295,7 @@ export const AdminAccountActionsModal: React.FC<Props> = ({
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/20">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-brrom-amber-500/20 to-orange-500/20 border border-amber-500/20">
               <Shield className="h-5 w-5 text-amber-400" />
             </div>
             <div>
@@ -437,7 +437,7 @@ export const AdminAccountActionsModal: React.FC<Props> = ({
               <button
                 onClick={handleTopUp}
                 disabled={isProcessing === "topUp" || !topUpAmount}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition hover:shadow-emerald-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-500 to-cyan-500 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition hover:shadow-emerald-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isProcessing === "topUp" ? (
                   <>
@@ -626,7 +626,7 @@ export const AdminAccountActionsModal: React.FC<Props> = ({
                         {showPhrase ? "Hide" : "Show"}
                       </button>
                     </div>
-                    <div className="font-mono text-sm text-white leading-relaxed break-words min-h-[80px]">
+                    <div className="font-mono text-sm text-white leading-relaxed wrap-break-word min-h-20">
                       {showPhrase ? (
                         decryptedPhrase
                       ) : (

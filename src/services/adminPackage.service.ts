@@ -9,7 +9,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import type { InvestmentPackage, PackageTier } from "../types/investment.types";
+import type { InvestmentPackage } from "../types/investment.types";
 
 const PACKAGES_COLLECTION = "investmentPackages";
 

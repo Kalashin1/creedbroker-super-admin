@@ -3,7 +3,7 @@ import {
   collection,
   addDoc,
   getDocs,
-  getDoc,
+  // getDoc,
   updateDoc,
   deleteDoc,
   doc,
@@ -20,7 +20,7 @@ import { db } from '../lib/firebase';
 import type {
   Notification,
   CreateNotificationPayload,
-  NotificationFilters,
+  // NotificationFilters,
 } from "../types/notification.types";
 
 const RETENTION_DAYS = 90;

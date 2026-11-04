@@ -11,7 +11,6 @@ import {
   RefreshCw,
   Lock,
   Unlock,
-  AlertTriangle,
   Mail,
 } from "lucide-react";
 import { toast } from "react-toastify";
@@ -187,7 +186,7 @@ export const UserWalletModal: React.FC<Props> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={onClose}
@@ -354,7 +353,7 @@ export const UserWalletModal: React.FC<Props> = ({
                       )}
                     </button>
                   </div>
-                  <div className="font-mono text-sm text-white leading-relaxed break-words min-h-[60px]">
+                  <div className="font-mono text-sm text-white leading-relaxed wrap-break-word min-h-15">
                     {showPhrase ? (
                       decryptedPhrase
                     ) : (

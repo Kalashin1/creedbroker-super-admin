@@ -1,6 +1,6 @@
 // src/pages/admin/CreatePackage.tsx
 import React, { useState, useEffect } from "react";
-import { Package, Plus, LayoutGrid, Loader2, ArrowLeft } from "lucide-react";
+import { Package, Plus, Loader2, ArrowLeft } from "lucide-react";
 import { toast } from "react-toastify";
 import { fetchAdminPackages } from "../../../../services/adminPackage.service";
 import PackageForm from "./components/PackageForm";

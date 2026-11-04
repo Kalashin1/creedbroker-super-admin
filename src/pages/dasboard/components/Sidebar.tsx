@@ -9,12 +9,6 @@ import {
   ArrowDownToLine,
   ArrowUpFromLine,
   Receipt,
-  User,
-  CreditCard,
-  Shield,
-  FileCheck,
-  Settings,
-  HelpCircle,
   LogOut,
   ChevronLeft,
   ChevronDown,
@@ -23,7 +17,6 @@ import {
   Wallet,
   Bot,
 } from "lucide-react";
-import { Landmark } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext"; 
 import { signOut } from "../../../services/auth.service"; 
 import { useMediaQuery } from "../../../hooks/useMediaQuery";
@@ -187,7 +180,7 @@ const NavItemRow: React.FC<{
             : "text-slate-400 hover:bg-slate-800 hover:text-white"
         }`}
       >
-        <item.icon className="h-[18px] w-[18px]" />
+        <item.icon className="h-4.5 w-4.5" />
         {isActive && (
           <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r bg-emerald-400" />
         )}
@@ -214,7 +207,7 @@ const NavItemRow: React.FC<{
                 : "bg-slate-800 text-slate-400 group-hover:text-white"
             }`}
           >
-            <item.icon className="h-[18px] w-[18px]" />
+            <item.icon className="h-4.5 w-4.5" />
           </div>
           <span className="flex-1 text-sm font-medium">{item.label}</span>
           <ChevronDown
@@ -274,7 +267,7 @@ const NavItemRow: React.FC<{
             : "bg-slate-800 text-slate-400 group-hover:text-white"
         }`}
       >
-        <item.icon className="h-[18px] w-[18px]" />
+        <item.icon className="h-4.5 w-4.5" />
       </div>
       <span className="flex-1 text-sm font-medium">{item.label}</span>
       {item.badge && (
@@ -327,13 +320,13 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-800 px-4 py-4">
         {effectiveCollapsed ? (
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-emerald-400 to-cyan-500">
             <Sparkles className="h-5 w-5 text-slate-950" strokeWidth={2.5} />
           </div>
         ) : (
           <div className="flex items-center gap-3 min-w-0">
             <div className="relative shrink-0">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-sm font-bold text-slate-950">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-cyan-500 text-sm font-bold text-slate-950">
                 {getInitials(displayName)}
               </div>
               <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-slate-900 bg-emerald-400" />
@@ -412,7 +405,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           }`}
         >
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-500/10 text-red-400 transition group-hover:bg-red-500/20">
-            <LogOut className="h-[18px] w-[18px]" />
+            <LogOut className="h-4.5 w-4.5" />
           </div>
           {!effectiveCollapsed && (
             <span className="text-sm font-medium text-red-400 group-hover:text-red-300">
@@ -446,14 +439,14 @@ const Sidebar: React.FC<SidebarProps> = ({
     return (
       <>
         <div
-          className={`fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm transition-opacity lg:hidden ${
+          className={`fixed inset-0 z-60 bg-black/60 backdrop-blur-sm transition-opacity lg:hidden ${
             mobileOpen ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
           onClick={onCloseMobile}
         />
 
         <aside
-          className={`fixed inset-y-0 left-0 z-[70] w-[280px] border-r border-slate-800 bg-slate-950 transition-transform duration-300 ease-out lg:hidden ${
+          className={`fixed inset-y-0 left-0 z-70 w-70 border-r border-slate-800 bg-slate-950 transition-transform duration-300 ease-out lg:hidden ${
             mobileOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -466,7 +459,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Desktop: collapsible rail
   return (
     <aside
-      className={`hidden lg:flex lg:flex-col lg:flex-shrink-0 border-r border-slate-800 bg-slate-950 transition-[width] duration-300 ease-out ${widthClass}`}
+      className={`hidden lg:flex lg:flex-col lg:shrink-0 border-r border-slate-800 bg-slate-950 transition-[width] duration-300 ease-out ${widthClass}`}
     >
       {content}
     </aside>

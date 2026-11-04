@@ -65,7 +65,7 @@ export const NotificationsProvider: React.FC<{ children: React.ReactNode }> = ({
       (newNotifications) => {
         setNotifications((prev) => {
           // Show toast for new high/urgent priority notifications
-          const newIds = new Set(newNotifications.map((n) => n.id));
+          // const newIds = new Set(newNotifications.map((n) => n.id));
           const brandNew = newNotifications.filter(
             (n) => !prev.some((p) => p.id === n.id)
           );

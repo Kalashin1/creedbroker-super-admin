@@ -1,0 +1,13 @@
+{
+  "hosting": [{
+    "public": "dist",
+    "target": "creedcapital-admin",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }]
+}

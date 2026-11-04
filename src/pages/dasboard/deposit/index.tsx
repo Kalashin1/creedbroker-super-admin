@@ -1,6 +1,6 @@
 // src/pages/admin/Deposits.tsx
 import React, { useState, useEffect } from "react";
-import { ArrowDownToLine, Loader2, RefreshCw } from "lucide-react";
+import { ArrowDownToLine, RefreshCw } from "lucide-react";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../context/AuthContext";
 import {

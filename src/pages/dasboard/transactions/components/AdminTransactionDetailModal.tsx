@@ -3,14 +3,12 @@ import React, { useState } from "react";
 import {
   X,
   User,
-  Hash,
   Calendar,
   FileText,
   ExternalLink,
   CheckCircle2,
   XCircle,
   Clock,
-  AlertTriangle,
 } from "lucide-react";
 import { toast } from "react-toastify";
 // 🆕 Import specific update functions instead of the generic one
@@ -119,7 +117,7 @@ export const AdminTransactionDetailModal: React.FC<Props> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={onClose}
@@ -287,7 +285,7 @@ export const AdminTransactionDetailModal: React.FC<Props> = ({
             <button
               onClick={() => handleStatusUpdate("completed")}
               disabled={isUpdating}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 py-2.5 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition hover:shadow-emerald-500/40 disabled:opacity-50"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-500 to-cyan-500 py-2.5 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition hover:shadow-emerald-500/40 disabled:opacity-50"
             >
               {isUpdating ? (
                 <Clock className="h-4 w-4 animate-spin" />

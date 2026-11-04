@@ -8,7 +8,6 @@ import {
   Unlock,
   Bell,
   DollarSign,
-  Trash2,
   Shield,
   Loader2,
 } from "lucide-react";

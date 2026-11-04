@@ -207,7 +207,7 @@ export const AdminTransactionTable: React.FC<Props> = ({
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-sm font-bold text-slate-950">
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-cyan-500 text-sm font-bold text-slate-950">
                             {(t.userName || "?").charAt(0).toUpperCase()}
                           </div>
                           <div className="min-w-0">

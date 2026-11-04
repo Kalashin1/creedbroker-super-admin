@@ -11,7 +11,6 @@ import {
   AlertTriangle,
   Ban,
   Clock,
-  ImageOff,
 } from "lucide-react";
 import type { UserProfile } from "../../../../types/user.types";
 
@@ -93,7 +92,7 @@ const ProfileHeader: React.FC<Props> = ({ profile }) => {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-6">
+    <div className="rounded-2xl border border-slate-800 bg-linear-to-br from-slate-900 to-slate-950 p-6">
       <div className="flex flex-col gap-6 md:flex-row md:items-start">
         {/* 🆕 Avatar — shows profile image if available, fallback to letter */}
         <div className="relative">
@@ -105,7 +104,7 @@ const ProfileHeader: React.FC<Props> = ({ profile }) => {
               className="h-24 w-24 shrink-0 rounded-2xl object-cover shadow-lg ring-2 ring-slate-700"
             />
           ) : (
-            <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-cyan-500 text-3xl font-bold text-slate-950 shadow-lg">
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-400 to-cyan-500 text-3xl font-bold text-slate-950 shadow-lg">
               {profile.fullName?.charAt(0).toUpperCase() || "?"}
             </div>
           )}

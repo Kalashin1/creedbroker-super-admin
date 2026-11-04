@@ -1,7 +1,6 @@
 // src/components/admin/deposits/DepositStats.tsx
 import React from "react";
 import {
-  DollarSign,
   Clock,
   CheckCircle2,
   XCircle,

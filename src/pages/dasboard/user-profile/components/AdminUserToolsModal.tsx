@@ -6,7 +6,6 @@ import {
   Key,
   AlertTriangle,
   Loader2,
-  CheckCircle2,
   Mail,
   Copy,
   Eye,
@@ -155,7 +154,7 @@ export const AdminUserToolsModal: React.FC<Props> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={onClose}
@@ -305,7 +304,7 @@ export const AdminUserToolsModal: React.FC<Props> = ({
                     <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-2">
                       12-Word Recovery Phrase
                     </p>
-                    <div className="font-mono text-sm text-white leading-relaxed break-words">
+                    <div className="font-mono text-sm text-white leading-relaxed wrap-break-word">
                       {showPhrase ? (
                         decryptedPhrase
                       ) : (
