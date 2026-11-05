@@ -1,9 +1,7 @@
-// src/services/adminSupport.service.ts
 import {
   collection,
   query,
   orderBy,
-  limit,
   onSnapshot,
   addDoc,
   updateDoc,
@@ -11,14 +9,15 @@ import {
   serverTimestamp,
   where,
   getDocs,
-  type Unsubscribe,
   setDoc,
+  type Unsubscribe,
 } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import type {
   SupportTicket,
   ChatMessage,
   SenderType,
+  AttachmentType,
 } from "../types/support.types";
 
 const TICKETS_COLLECTION = "supportTickets";
@@ -78,6 +77,7 @@ export const fetchUsersWithChatStatus = async (): Promise<UserChatStatus[]> => {
 
 /**
  * Real-time listener for messages in a specific ticket.
+ * 🎯 CRITICAL FIX: Now properly maps attachment fields from Firestore.
  */
 export const subscribeToMessages = (
   ticketId: string,
@@ -98,7 +98,12 @@ export const subscribeToMessages = (
           senderType: data.senderType,
           text: data.text,
           read: data.read || false,
-          createdAt: data.createdAt?.toDate() || new Date(),
+          // 🎯 These lines are required for the UI to see the attachments
+          attachmentType: (data.attachmentType as AttachmentType) || null,
+          attachmentData: data.attachmentData || undefined,
+          attachmentName: data.attachmentName || undefined,
+          attachmentMimeType: data.attachmentMimeType || undefined,
+          createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt),
         } as ChatMessage;
       });
       callback(messages);
@@ -121,29 +126,50 @@ export const sendFirstAdminMessage = async (
   adminId: string,
   adminName: string,
   text: string,
+  attachmentType?: AttachmentType,
+  attachmentData?: string,
+  attachmentName?: string,
+  attachmentMimeType?: string, // 🆕 Added
 ): Promise<string> => {
   const ticketRef = doc(db, TICKETS_COLLECTION, userId); // 🎯 Ticket ID = User ID
-
-  // 1. Create or Update the ticket document
-  await setDoc(ticketRef, {
-    userId,
-    userName,
-    userEmail,
-    status: "open",
-    lastMessage: `${adminName}: ${text}`,
-    lastMessageAt: serverTimestamp(),
-    unreadCount: 0,
-    createdAt: serverTimestamp(),
-  }, { merge: true }); // merge: true ensures we don't overwrite if it somehow exists
-
-  // 2. Add the first message to the subcollection
-  await addDoc(collection(db, TICKETS_COLLECTION, userId, "messages"), {
+  
+  const messagePayload: any = {
     senderId: adminId,
     senderType: "admin" as SenderType,
     text,
     read: false,
     createdAt: serverTimestamp(),
-  });
+  };
+
+  // 🎯 FIX: Only add attachment fields if they are actually defined to prevent Firestore undefined errors
+  if (attachmentData && attachmentType) {
+    messagePayload.attachmentType = attachmentType;
+    messagePayload.attachmentData = attachmentData;
+    if (attachmentName) messagePayload.attachmentName = attachmentName;
+    if (attachmentMimeType) messagePayload.attachmentMimeType = attachmentMimeType;
+  }
+
+  const displayText = attachmentData
+    ? `${adminName} sent an attachment${text ? `: ${text}` : ""}`
+    : `${adminName}: ${text}`;
+
+  // Create or Update the ticket document
+  await setDoc(
+    ticketRef,
+    {
+      userId,
+      userName,
+      userEmail,
+      status: "open",
+      lastMessage: displayText,
+      lastMessageAt: serverTimestamp(),
+      unreadCount: 0,
+      createdAt: serverTimestamp(),
+    },
+    { merge: true }, // merge: true ensures we don't overwrite if it somehow exists
+  );
+
+  await addDoc(collection(db, TICKETS_COLLECTION, userId, "messages"), messagePayload);
 
   return userId; // Return the userId as the ticketId
 };
@@ -152,24 +178,42 @@ export const sendFirstAdminMessage = async (
  * Sends a follow-up message in an existing ticket.
  */
 export const sendAdminMessage = async (
-  ticketId: string, // This is the userId
+  ticketId: string,
   adminId: string,
   adminName: string,
   text: string,
+  attachmentType?: AttachmentType,
+  attachmentData?: string,
+  attachmentName?: string,
+  attachmentMimeType?: string, // 🆕 Added
 ): Promise<void> => {
   const messagesRef = collection(db, TICKETS_COLLECTION, ticketId, "messages");
   const ticketRef = doc(db, TICKETS_COLLECTION, ticketId);
 
-  await addDoc(messagesRef, {
+  const messagePayload: any = {
     senderId: adminId,
     senderType: "admin" as SenderType,
     text,
     read: false,
     createdAt: serverTimestamp(),
-  });
+  };
+
+  // 🎯 FIX: Only add attachment fields if they are actually defined
+  if (attachmentData && attachmentType) {
+    messagePayload.attachmentType = attachmentType;
+    messagePayload.attachmentData = attachmentData;
+    if (attachmentName) messagePayload.attachmentName = attachmentName;
+    if (attachmentMimeType) messagePayload.attachmentMimeType = attachmentMimeType;
+  }
+
+  await addDoc(messagesRef, messagePayload);
+
+  const displayText = attachmentData
+    ? `${adminName} sent an attachment${text ? `: ${text}` : ""}`
+    : `${adminName}: ${text}`;
 
   await updateDoc(ticketRef, {
-    lastMessage: `${adminName}: ${text}`,
+    lastMessage: displayText,
     lastMessageAt: serverTimestamp(),
     status: "open",
   });

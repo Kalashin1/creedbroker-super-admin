@@ -1,4 +1,3 @@
-// src/components/admin/support/ChatWindow.tsx
 import React, { useState, useEffect, useRef } from "react";
 import {
   Send,
@@ -7,9 +6,11 @@ import {
   XCircle,
   Loader2,
   MessageSquare,
+  Paperclip,
+  X,
 } from "lucide-react";
 import { toast } from "react-toastify";
-import { useAuth } from "../../../../context/AuthContext";
+import { useAuth } from "../../../../context/AuthContext"; // Adjust path if needed
 import {
   subscribeToMessages,
   sendAdminMessage,
@@ -17,7 +18,9 @@ import {
   markMessagesAsRead,
   closeTicket,
 } from "../../../../services/support.service";
-import type { ChatMessage } from "../../../../types/support.types";
+import { fileToHexString, validateFile } from "../../../../utils/fileEncoder";
+import { AttachmentPreview } from "./AttachmentPreview"; // Adjust path to where you saved AttachmentPreview
+import type { ChatMessage, AttachmentType } from "../../../../types/support.types";
 import type { UserChatStatus } from "../../../../services/support.service";
 
 interface Props {
@@ -38,21 +41,27 @@ export const ChatWindow: React.FC<Props> = ({
   const [isMessagesLoaded, setIsMessagesLoaded] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
+  
+  // 🆕 File Upload State
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isProcessingFile, setIsProcessingFile] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // 🆕 FIX 1: Reset state whenever the selected user changes
+  // Reset state whenever the selected user changes
   useEffect(() => {
     setCurrentTicketId(user.ticketId);
     setMessages([]);
     setIsMessagesLoaded(false);
     setNewMessage("");
+    setSelectedFile(null);
   }, [user.userId, user.ticketId]);
 
-  // 🆕 FIX 2: Proper subscription with loading state management
+  // Subscribe to messages
   useEffect(() => {
     if (!currentTicketId) {
-      setIsMessagesLoaded(true); // No ticket means we are "loaded" (empty state)
+      setIsMessagesLoaded(true);
       return;
     }
 
@@ -71,7 +80,7 @@ export const ChatWindow: React.FC<Props> = ({
       (err) => {
         console.error("Failed to load messages:", err);
         toast.error("Failed to load messages");
-        setIsMessagesLoaded(true); // Prevent infinite loading on error
+        setIsMessagesLoaded(true);
       },
     );
 
@@ -87,10 +96,30 @@ export const ChatWindow: React.FC<Props> = ({
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMessage.trim() || !currentUser) return;
+    if ((!newMessage.trim() && !selectedFile) || !currentUser || isSending) return;
 
     setIsSending(true);
+    setIsProcessingFile(true);
     try {
+      let attachmentType: AttachmentType = null;
+      let attachmentData: string | undefined = undefined;
+      let attachmentName: string | undefined = undefined;
+      let attachmentMimeType: string | undefined = undefined;
+
+      if (selectedFile) {
+        const validation = validateFile(selectedFile);
+        if (!validation.valid) {
+          toast.error(validation.error);
+          setIsSending(false);
+          setIsProcessingFile(false);
+          return;
+        }
+        attachmentType = selectedFile.type.includes("pdf") ? "pdf" : "image";
+        attachmentData = await fileToHexString(selectedFile);
+        attachmentName = selectedFile.name;
+        attachmentMimeType = selectedFile.type;
+      }
+
       let ticketId = currentTicketId;
 
       if (!ticketId) {
@@ -102,6 +131,10 @@ export const ChatWindow: React.FC<Props> = ({
           currentUser.uid,
           currentUser.displayName || "Admin",
           newMessage.trim(),
+          attachmentType,
+          attachmentData,
+          attachmentName,
+          attachmentMimeType,
         );
         setCurrentTicketId(ticketId);
         onTicketCreated(ticketId);
@@ -112,13 +145,22 @@ export const ChatWindow: React.FC<Props> = ({
           currentUser.uid,
           currentUser.displayName || "Admin",
           newMessage.trim(),
+          attachmentType,
+          attachmentData,
+          attachmentName,
+          attachmentMimeType,
         );
       }
+      
       setNewMessage("");
+      setSelectedFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (err) {
+      console.error(err);
       toast.error("Failed to send message");
     } finally {
       setIsSending(false);
+      setIsProcessingFile(false);
     }
   };
 
@@ -185,7 +227,6 @@ export const ChatWindow: React.FC<Props> = ({
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-6 custom-scroll">
         {!currentTicketId ? (
-          // 🆕 FIX 3: Explicit "Start Conversation" state
           <div className="flex flex-col items-center justify-center h-full text-center">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-800/50 mb-4">
               <Send className="h-8 w-8 text-slate-500" />
@@ -199,13 +240,11 @@ export const ChatWindow: React.FC<Props> = ({
             </p>
           </div>
         ) : !isMessagesLoaded ? (
-          // 🆕 FIX 4: Actual loading state (only shows briefly while fetching)
           <div className="flex flex-col items-center justify-center h-full text-center">
             <Loader2 className="h-8 w-8 animate-spin text-slate-500 mb-3" />
             <p className="text-sm text-slate-400">Loading messages...</p>
           </div>
         ) : messages.length === 0 ? (
-          // Ticket exists, but genuinely has 0 messages
           <div className="flex flex-col items-center justify-center h-full text-center">
             <MessageSquare className="h-8 w-8 text-slate-500 mb-3" />
             <p className="text-sm text-slate-400">
@@ -213,7 +252,6 @@ export const ChatWindow: React.FC<Props> = ({
             </p>
           </div>
         ) : (
-          // Render messages
           messages.map((msg, index) => {
             const isAdmin = msg.senderType === "admin";
             const showDateSeparator =
@@ -255,9 +293,21 @@ export const ChatWindow: React.FC<Props> = ({
                             : "bg-slate-800 text-slate-100 rounded-bl-sm border border-slate-700"
                         }`}
                       >
-                        <p className="whitespace-pre-wrap break-words leading-relaxed">
-                          {msg.text}
-                        </p>
+                        {msg.text && (
+                          <p className="whitespace-pre-wrap break-words leading-relaxed">
+                            {msg.text}
+                          </p>
+                        )}
+                        
+                        {/* 🎯 Render Attachment (Works for both Admin and User uploads) */}
+                        {msg.attachmentData && msg.attachmentType && (
+                          <AttachmentPreview 
+                            type={msg.attachmentType} 
+                            hexData={msg.attachmentData} 
+                            fileName={msg.attachmentName || "attachment"} 
+                            mimeType={msg.attachmentMimeType} 
+                          />
+                        )}
                       </div>
                       <div
                         className={`flex items-center gap-1 mt-1 text-[10px] ${isAdmin ? "text-slate-500" : "text-slate-500"}`}
@@ -282,26 +332,67 @@ export const ChatWindow: React.FC<Props> = ({
 
       {/* Input Area */}
       <div className="border-t border-slate-800 bg-slate-900/80 p-4 backdrop-blur shrink-0">
+        {/* Selected File Preview */}
+        {selectedFile && (
+          <div className="mb-3 flex items-center gap-2 p-2 rounded-lg bg-slate-800 border border-slate-700 w-fit">
+            <span className="text-xs text-slate-300 truncate max-w-[200px]">{selectedFile.name}</span>
+            <button 
+              onClick={() => {
+                setSelectedFile(null);
+                if (fileInputRef.current) fileInputRef.current.value = "";
+              }} 
+              className="text-slate-400 hover:text-rose-400 transition"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
         <form onSubmit={handleSend} className="flex items-center gap-3">
+          {/* 🆕 File Input & Paperclip Button */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept="image/jpeg,image/png,image/webp,application/pdf"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) setSelectedFile(file);
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isSending || isProcessingFile || user.status === "closed"}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-slate-700 bg-slate-950/50 text-slate-400 transition hover:bg-slate-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Attach file (Max 250KB)"
+          >
+            {isProcessingFile ? <Loader2 className="h-4 w-4 animate-spin" /> : <Paperclip className="h-4 w-4" />}
+          </button>
+
           <input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder={`Message ${user.userName}...`}
-            className="flex-1 rounded-xl border border-slate-700 bg-slate-950/50 py-3 px-4 text-sm text-white placeholder-slate-500 outline-none transition focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
+            disabled={isProcessingFile || user.status === "closed"}
+            className="flex-1 rounded-xl border border-slate-700 bg-slate-950/50 py-3 px-4 text-sm text-white placeholder-slate-500 outline-none transition focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 disabled:opacity-50"
           />
           <button
             type="submit"
-            disabled={isSending || !newMessage.trim()}
+            disabled={isSending || isProcessingFile || (!newMessage.trim() && !selectedFile) || user.status === "closed"}
             className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white shadow-lg shadow-emerald-500/20 transition hover:shadow-emerald-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSending ? (
+            {isSending || isProcessingFile ? (
               <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
               <Send className="h-4 w-4" />
             )}
           </button>
         </form>
+        <p className="text-[10px] text-slate-600 mt-2 text-center">
+          Max file size: 250KB · Supported: JPG, PNG, WebP, PDF
+        </p>
       </div>
     </div>
   );
